@@ -28,7 +28,7 @@ export default async function BatchPage() {
         code,
         used: false,
         download_url:
-          'https://example.com/regalo.zip'
+          'https://wpgovdftvvakscbuaedh.supabase.co/storage/v1/object/public/Downloads/4f8e6cdc-e138-42e9-bb9e-71c9c7eb2ee5.png'
       }
     ])
 
