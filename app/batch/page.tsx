@@ -21,8 +21,7 @@ export default async function BatchPage() {
   for (let i = 0; i < 20; i++) {
     const code = generateCode()
 
-    const redeemUrl =
-      `http://127.0.0.1:3000/redeem/${code}`
+    const redeemUrl = `https://qr-system-two.vercel.app/redeem/${code}`;
 
     await supabase.from('codes').insert([
       {
