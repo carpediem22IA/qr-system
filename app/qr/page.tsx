@@ -6,7 +6,7 @@ export default function QRPage() {
       </h1>
 
       <img
-        src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=http://127.0.0.1:3000/redeem/ABC123"
+        src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://qr-system-two.vercel.app/redeem/ABC123"
         alt="QR"
       />
 
