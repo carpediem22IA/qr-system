@@ -1,24 +1,25 @@
 import { supabase } from '@/lib/supabase'
 
-type Props = {
+export default async function RedeemPage({
+  params
+}: {
   params: Promise<{
     code: string
   }>
-}
+}) {
 
-export default async function RedeemPage({ params }: Props) {
   const { code } = await params
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('codes')
     .select('*')
     .eq('code', code)
     .single()
 
-  if (error || !data) {
+  if (!data) {
     return (
       <main className="p-10">
-        <h1 className="text-3xl font-bold text-red-600">
+        <h1 className="text-3xl font-bold">
           Código no válido
         </h1>
       </main>
@@ -28,7 +29,7 @@ export default async function RedeemPage({ params }: Props) {
   if (data.used) {
     return (
       <main className="p-10">
-        <h1 className="text-3xl font-bold text-orange-600">
+        <h1 className="text-3xl font-bold">
           Código ya utilizado
         </h1>
       </main>
@@ -38,27 +39,29 @@ export default async function RedeemPage({ params }: Props) {
   await supabase
     .from('codes')
     .update({
-      used: true,
-      used_at: new Date().toISOString()
+      used: true
     })
-    .eq('code', code)
+    .eq('id', data.id)
 
   return (
-    <main className="p-10">
-      <h1 className="text-3xl font-bold text-green-600 mb-6">
-        Código válido
+    <main className="p-10 text-center">
+
+      <h1 className="text-4xl font-bold mb-6">
+        Tu regalo está listo 🎁
       </h1>
 
-      <p className="mb-4">
-        Descarga tu regalo digital:
+      <p className="mb-8">
+        Pulsa el botón para descargar.
       </p>
 
       <a
         href={data.download_url}
-        className="text-blue-600 underline"
+        download
+        className="bg-black text-white px-6 py-4 rounded text-xl"
       >
         Descargar regalo
       </a>
+
     </main>
   )
 }
