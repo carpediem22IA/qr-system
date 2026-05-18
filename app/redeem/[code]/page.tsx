@@ -55,11 +55,10 @@ export default async function RedeemPage({
       </p>
 
       <a
-        href={data.download_url}
-        download
+        href={`/api/download/${code}`}
         className="bg-black text-white px-6 py-4 rounded text-xl"
       >
-        Descargar regalo
+       Descargar regalo
       </a>
 
     </main>
