@@ -54,7 +54,7 @@ export async function GET(
         ) || 'application/octet-stream',
 
       'Content-Disposition':
-        'attachment; filename="regalo"'
+  `attachment; filename="${data.download_url.split('/').pop()}"`
     }
   })
 }
