@@ -83,7 +83,6 @@ const newBatch =
     const redeemUrl =
       `https://qr-system-two.vercel.app/redeem/${code}`
 
- const { data } =
   const { data: insertedData } =
   await supabase
     .from('codes')
