@@ -31,14 +31,14 @@ export default function GeneratePage() {
   const [loading, setLoading] =
     useState(false)
 
-  const [qrList, setQrList] =
-    useState<
-      {
-        code: string
-        qrUrl: string
-        redeemUrl: string
-      }[]
-    >([])
+  const [qrList, setQrList] = useState<
+  {
+    id: number
+    code: string
+    qrUrl: string
+    redeemUrl: string
+  }[]
+>([])
 
   const [generatedBatch, setGeneratedBatch] =
   useState<number | null>(null)
@@ -109,7 +109,7 @@ const newBatch =
       )
 
    newList.push({
-     id: data.id,
+     id: inserted.id,
      code,
      redeemUrl,
      qrUrl
