@@ -39,7 +39,7 @@ export default async function RedeemPage({
   await supabase
     .from('codes')
     .update({
-      used: true
+      used: true,
       redeemed_at: new Date()
     })
     .eq('id', data.id)
