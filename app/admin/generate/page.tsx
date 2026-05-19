@@ -84,16 +84,15 @@ const newBatch =
       `https://qr-system-two.vercel.app/redeem/${code}`
 
  const { data } =
+  const { data: insertedData } =
   await supabase
     .from('codes')
     .insert([
       {
         code,
         used: false,
-        batch: newBatch,
-        printed: false,
         download_url:
-  'https://wpgovdftvvakscbuaedh.supabase.co/storage/v1/object/public/Downloads/4f8e6cdc-e138-42e9-bb9e-71c9c7eb2ee5.png'
+          'https://wpgovdftvvakscbuaedh.supabase.co/storage/v1/object/public/Downloads/4f8e6cdc-e138-42e9-bb9e-71c9c7eb2ee5.png'
       }
     ])
     .select()
@@ -109,7 +108,7 @@ const newBatch =
       )
 
    newList.push({
-     id: inserted.id,
+     id: insertedData.id,
      code,
      redeemUrl,
      qrUrl
