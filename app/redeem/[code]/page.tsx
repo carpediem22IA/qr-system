@@ -40,6 +40,7 @@ export default async function RedeemPage({
     .from('codes')
     .update({
       used: true
+      redeemed_at: new Date()
     })
     .eq('id', data.id)
 

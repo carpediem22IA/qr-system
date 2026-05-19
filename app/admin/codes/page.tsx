@@ -1,11 +1,40 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
+import Link from 'next/link'
+
 import { supabase } from '@/lib/supabase'
+
+type CodeItem = {
+
+  id: number
+
+  code: string
+
+  batch: number
+
+  used: boolean
+
+  printed: boolean
+
+  created_at: string
+
+  printed_at: string | null
+
+  redeemed_at: string | null
+}
 
 export default function CodesPage() {
 
-  const [codes, setCodes] = useState<any[]>([])
+  const [codes, setCodes] =
+    useState<CodeItem[]>([])
+
+  useEffect(() => {
+
+    loadCodes()
+
+  }, [])
 
   async function loadCodes() {
 
@@ -17,50 +46,48 @@ export default function CodesPage() {
           ascending: true
         })
 
-    setCodes(data || [])
+    if (data) {
+
+      setCodes(data)
+    }
   }
-
-  async function resetCode(id: number) {
-
-    await supabase
-      .from('codes')
-      .update({
-        used: false
-      })
-      .eq('id', id)
-
-    loadCodes()
-  }
-
-  useEffect(() => {
-    loadCodes()
-  }, [])
 
   return (
+
     <main className="p-10">
 
       <h1 className="text-4xl font-bold mb-8">
-        Gestión de Códigos QR
+
+        Administración QR
+
       </h1>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-auto">
 
-        <table className="w-full border-collapse border">
+        <table className="w-full border">
 
           <thead>
 
-            <tr className="bg-gray-200">
+            <tr className="bg-gray-200 text-black">
 
               <th className="border p-3">
-                ID
+                QR
               </th>
 
               <th className="border p-3">
-                Código
+                Lote
               </th>
 
               <th className="border p-3">
-                Estado
+                Usado
+              </th>
+
+              <th className="border p-3">
+                Impreso
+              </th>
+
+              <th className="border p-3">
+                Fecha uso
               </th>
 
               <th className="border p-3">
@@ -73,36 +100,73 @@ export default function CodesPage() {
 
           <tbody>
 
-            {codes.map((code) => (
+            {codes.map((qr) => (
 
-              <tr key={code.id}>
-
-                <td className="border p-3">
-                  {code.id}
-                </td>
-
-                <td className="border p-3 font-bold">
-                  {code.code}
-                </td>
+              <tr
+                key={qr.id}
+                className="text-center"
+              >
 
                 <td className="border p-3">
 
-                  {code.used
-                    ? 'Usado'
-                    : 'Libre'}
+                  QR #{qr.id}
 
                 </td>
 
                 <td className="border p-3">
 
-                  <button
-                    onClick={() =>
-                      resetCode(code.id)
-                    }
-                    className="bg-black text-white px-4 py-2 rounded"
+                  {qr.batch}
+
+                </td>
+
+                <td className="border p-3">
+
+                  {
+                    qr.used
+                      ? 'Sí'
+                      : 'No'
+                  }
+
+                </td>
+
+                <td className="border p-3">
+
+                  {
+                    qr.printed
+                      ? 'Sí'
+                      : 'No'
+                  }
+
+                </td>
+
+                <td className="border p-3 text-sm">
+
+                  {
+                    qr.redeemed_at
+
+                      ? new Date(
+                          qr.redeemed_at
+                        ).toLocaleString()
+
+                      : '-'
+                  }
+
+                </td>
+
+                <td className="border p-3">
+
+                  <Link
+                    href={`/admin/qr/${qr.id}`}
+                    className="
+                      bg-black
+                      text-white
+                      px-4
+                      py-2
+                      rounded-lg
+                    "
                   >
-                    Resetear
-                  </button>
+                    Ver QR
+                  </Link>
 
                 </td>
 
