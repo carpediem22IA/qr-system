@@ -136,17 +136,24 @@ export default function CodesPage() {
            {paginatedCodes.map((qr, index) => (
 
               <tr
-  		key={qr.id}
+ 		 key={qr.id}
 
- 		 className={`
-   		 text-center
-  		 ${
-   	         index % 2 === 0
-    	         ? 'bg-white'
-    	         : 'bg-gray-100'
-  		  }
-                `}
-		>
+  		className={`
+ 		   text-center
+
+  		  ${
+  		    qr.used && qr.printed
+
+   	          ? 'bg-green-100 font-bold'
+
+     		   : qr.id % 2 === 0
+
+       	   ? 'bg-gray-100'
+
+       	   : 'bg-white'
+  	  }
+ 	 `}
+	>
 
                 <td className="border p-3">
 
@@ -196,29 +203,80 @@ export default function CodesPage() {
 
                 <td className="border p-3">
 
-                  <Link
- 		   href={`/admin/qr/${qr.id}`}
+  <div
+    className="
+      flex
+      gap-2
+      justify-center
+    "
+  >
 
-		   title={`
-		   QR #${qr.id}
-		   Lote ${qr.batch}
- 		   `}
+    <Link
+      href={`/admin/qr/${qr.id}`}
+      className="
+        bg-black
+        text-white
+        px-4
+        py-2
+        rounded-lg
+      "
+    >
 
- 		 className="
- 	          bg-black
-  		  text-white
-	          px-4
-   		  py-2
-  		  rounded-lg
-		 "
-		>
- 		 Ver QR
-		</Link>
+      Ver QR
 
-                </td>
+    </Link>
 
-              </tr>
+    {
+      qr.used && (
 
+        <button
+
+          onClick={async () => {
+
+            const confirmed =
+
+              confirm(
+
+                `¿Resetear uso del QR #${qr.id}?`
+              )
+
+            if (!confirmed) {
+
+              return
+            }
+
+            await supabase
+              .from('codes')
+              .update({
+
+                used: false,
+
+                redeemed_at: null
+              })
+              .eq('id', qr.id)
+
+            loadCodes()
+          }}
+
+          className="
+            bg-red-600
+            text-white
+            px-4
+            py-2
+            rounded-lg
+          "
+        >
+
+          Reset
+
+        </button>
+      )
+    }
+
+  </div>
+
+</td>
+</tr>
             ))}
 
           </tbody>
