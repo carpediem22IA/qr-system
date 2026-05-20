@@ -30,28 +30,40 @@ if (!data.printed) {
 
   return (
 
-    <main className="p-10">
+    <main className="
+      min-h-screen
+      flex
+      items-center
+      justify-center
+      bg-black
+      text-white
+      p-10
+    ">
 
-      <h1 className="
-        text-3xl
-        font-bold
-      ">
+      <div className="text-center">
 
-        QR no activado
+        <h1 className="
+          text-4xl
+          font-bold
+          mb-6
+        ">
 
-      </h1>
+          QR no activado
 
-      <p className="mt-4">
+        </h1>
 
-        Este QR todavía
-        no ha sido impreso.
+        <p className="text-lg">
 
-      </p>
+          Este QR todavía
+          no está disponible.
+
+        </p>
+
+      </div>
 
     </main>
   )
 }
-
 if (data.used) {
   return (
     <main className="p-10">
