@@ -30,6 +30,11 @@ export default function CodesPage() {
   const [codes, setCodes] =
     useState<CodeItem[]>([])
 
+  const [page, setPage] =
+  useState(1)
+
+  const ITEMS_PER_PAGE = 20
+
   useEffect(() => {
 
     loadCodes()
@@ -52,9 +57,37 @@ export default function CodesPage() {
     }
   }
 
+  const startIndex =
+  (page - 1) * ITEMS_PER_PAGE
+
+  const endIndex =
+  startIndex + ITEMS_PER_PAGE
+
+  const paginatedCodes =
+  codes.slice(
+    startIndex,
+    endIndex
+  )
+
+  const totalPages =
+
+  Math.max(
+    1,
+
+    Math.ceil(
+      codes.length /
+      ITEMS_PER_PAGE
+    )
+  )
+
   return (
 
-    <main className="p-10">
+    <main className="
+     min-h-screen
+     bg-gray-100
+     text-black
+     p-10
+    ">
 
       <h1 className="text-4xl font-bold mb-8">
 
@@ -100,12 +133,20 @@ export default function CodesPage() {
 
           <tbody>
 
-            {codes.map((qr) => (
+           {paginatedCodes.map((qr, index) => (
 
               <tr
-                key={qr.id}
-                className="text-center"
-              >
+  		key={qr.id}
+
+ 		 className={`
+   		 text-center
+  		 ${
+   	         index % 2 === 0
+    	         ? 'bg-white'
+    	         : 'bg-gray-100'
+  		  }
+                `}
+		>
 
                 <td className="border p-3">
 
@@ -156,17 +197,23 @@ export default function CodesPage() {
                 <td className="border p-3">
 
                   <Link
-                    href={`/admin/qr/${qr.id}`}
-                    className="
-                      bg-black
-                      text-white
-                      px-4
-                      py-2
-                      rounded-lg
-                    "
-                  >
-                    Ver QR
-                  </Link>
+ 		   href={`/admin/qr/${qr.id}`}
+
+		   title={`
+		   QR #${qr.id}
+		   Lote ${qr.batch}
+ 		   `}
+
+ 		 className="
+ 	          bg-black
+  		  text-white
+	          px-4
+   		  py-2
+  		  rounded-lg
+		 "
+		>
+ 		 Ver QR
+		</Link>
 
                 </td>
 
@@ -177,6 +224,66 @@ export default function CodesPage() {
           </tbody>
 
         </table>
+
+        <div className="
+  flex
+  justify-center
+  items-center
+  gap-4
+  mt-8
+">
+
+  <button
+    onClick={() =>
+      setPage(page - 1)
+    }
+
+    disabled={
+  codes.length === 0 ||
+  page === 1
+}
+
+    className="
+      bg-black
+      text-white
+      px-4
+      py-2
+      rounded
+      disabled:opacity-30
+    "
+  >
+    Anterior
+  </button>
+
+  <p className="font-bold">
+
+    Página {page} de {totalPages}
+
+  </p>
+
+  <button
+    onClick={() =>
+      setPage(page + 1)
+    }
+
+   disabled={
+  codes.length === 0 ||
+  page === totalPages
+}
+
+    className="
+      bg-black
+      text-white
+      px-4
+      py-2
+      rounded
+      disabled:opacity-30
+    "
+  >
+    Siguiente
+  </button>
+
+</div>
 
       </div>
 

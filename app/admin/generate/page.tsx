@@ -54,7 +54,7 @@ export default function GeneratePage() {
   }
 
   setLoading(true)
-  const { data: lastBatchData } =
+ const { data: existing } =
   await supabase
     .from('codes')
     .select('batch')
@@ -65,10 +65,10 @@ export default function GeneratePage() {
 
 const newBatch =
 
-  lastBatchData &&
-  lastBatchData.length > 0
+  existing &&
+  existing.length > 0
 
-    ? lastBatchData[0].batch + 1
+    ? existing[0].batch + 1
 
     : 1
     setGeneratedBatch(newBatch)
@@ -85,15 +85,19 @@ const newBatch =
 
   const { data: insertedData } =
   await supabase
-    .from('codes')
-    .insert([
-      {
-        code,
-        used: false,
-        download_url:
-          'https://wpgovdftvvakscbuaedh.supabase.co/storage/v1/object/public/Downloads/4f8e6cdc-e138-42e9-bb9e-71c9c7eb2ee5.png'
-      }
-    ])
+  .from('codes')
+  .insert([
+    {
+      code,
+
+      batch: newBatch,
+
+      used: false,
+
+      download_url:
+        'https://wpgovdftvvakscbuaedh.supabase.co/storage/v1/object/public/Downloads/oraculo_diosas_regalo.pdf'
+    }
+  ])
     .select()
     .single()
 
@@ -126,7 +130,12 @@ const newBatch =
 
   return (
 
-    <main className="p-10">
+    <main className="
+     min-h-screen
+     bg-gray-100
+     text-black
+     p-10
+    ">
 
       <h1 className="text-4xl font-bold mb-8">
         Generador Profesional QR

@@ -30,34 +30,61 @@ export default function PrintPage() {
 
   }, [])
 
-  async function loadBatches() {
+ async function loadBatches() {
 
-    const { data } =
-      await supabase
-        .from('codes')
-        .select('batch')
+  const { data } =
+    await supabase
+      .from('codes')
+      .select('*')
 
-    if (!data) return
+  if (!data) return
 
-    const uniqueBatches =
+  const uniqueBatches =
 
-      [...new Set(
-        data.map(item => item.batch)
-      )]
+    [...new Set(
+      data.map(item => item.batch)
+    )]
 
-      .sort((a, b) => a - b)
+    .sort((a, b) => a - b)
 
-    setBatches(uniqueBatches)
+  setBatches(uniqueBatches)
 
-    if (uniqueBatches.length > 0) {
+  // buscar lotes NO impresos
 
-      loadBatch(
-        uniqueBatches[
-          uniqueBatches.length - 1
-        ]
-      )
-    }
+  const unprinted = data.filter(
+    item => !item.printed
+  )
+
+  if (unprinted.length > 0) {
+
+    // obtener último lote no impreso
+
+    const firstUnprintedBatch =
+
+  Math.min(
+    ...unprinted.map(
+      item => item.batch
+    )
+  )
+
+loadBatch(
+  firstUnprintedBatch
+)
+
+  } else if (
+    uniqueBatches.length > 0
+  ) {
+
+    // si todos impresos,
+    // cargar último lote
+
+    loadBatch(
+      uniqueBatches[
+        uniqueBatches.length - 1
+      ]
+    )
   }
+}
 
   async function loadBatch(
     batch: number
@@ -112,7 +139,12 @@ export default function PrintPage() {
 
   return (
 
-    <main className="p-10">
+    <main className="
+     min-h-screen
+     bg-gray-100
+     text-black
+     p-10
+    ">
 
       <div className="flex gap-4 mb-8 print:hidden">
 

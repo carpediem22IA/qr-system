@@ -17,25 +17,50 @@ export default async function RedeemPage({
     .single()
 
   if (!data) {
-    return (
-      <main className="p-10">
-        <h1 className="text-3xl font-bold">
-          Código no válido
-        </h1>
-      </main>
-    )
-  }
+  return (
+    <main className="p-10">
+      <h1 className="text-3xl font-bold">
+        Código no válido
+      </h1>
+    </main>
+  )
+}
 
-  if (data.used) {
-    return (
-      <main className="p-10">
-        <h1 className="text-3xl font-bold">
-          Código ya utilizado
-        </h1>
-      </main>
-    )
-  }
+if (!data.printed) {
 
+  return (
+
+    <main className="p-10">
+
+      <h1 className="
+        text-3xl
+        font-bold
+      ">
+
+        QR no activado
+
+      </h1>
+
+      <p className="mt-4">
+
+        Este QR todavía
+        no ha sido impreso.
+
+      </p>
+
+    </main>
+  )
+}
+
+if (data.used) {
+  return (
+    <main className="p-10">
+      <h1 className="text-3xl font-bold">
+        Código ya utilizado
+      </h1>
+    </main>
+  )
+}
   await supabase
     .from('codes')
     .update({

@@ -51,9 +51,9 @@ export default function QRPage() {
         .from('codes')
         .select('*')
         .eq(
-          'id',
-          params.id
-        )
+        'id',
+        params.id
+       )
         .single()
 
     if (data) {
@@ -66,7 +66,12 @@ export default function QRPage() {
 
     return (
 
-      <main className="p-10">
+      <main className="
+       min-h-screen
+       bg-gray-100
+       text-black
+       p-10
+      ">
 
         Cargando QR...
 
@@ -76,7 +81,14 @@ export default function QRPage() {
 
   return (
 
-    <main className="p-10 max-w-2xl mx-auto">
+    <main className="
+     min-h-screen
+     bg-gray-100
+     text-black
+     p-10
+     max-w-2xl
+     mx-auto
+    ">
 
       <h1 className="text-4xl font-bold mb-8">
 
@@ -89,6 +101,7 @@ export default function QRPage() {
         rounded-xl
         p-8
         text-center
+	bg-white
       ">
 
         <p className="mb-2">
