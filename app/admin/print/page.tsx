@@ -24,6 +24,9 @@ export default function PrintPage() {
   const [showConfirm, setShowConfirm] =
   useState(false)
 
+  const [isReprint, setIsReprint] =
+  useState(false)
+
   useEffect(() => {
 
     loadBatches()
@@ -87,25 +90,56 @@ loadBatch(
 }
 
   async function loadBatch(
-    batch: number
-  ) {
+  batch: number
+) {
 
-    setSelectedBatch(batch)
+  setSelectedBatch(batch)
 
-    const { data } =
-      await supabase
-        .from('codes')
-        .select('*')
-        .eq('batch', batch)
-        .order('id', {
+  setShowConfirm(false)
+
+  setIsReprint(false)
+
+  const { data } =
+    await supabase
+      .from('codes')
+      .select('*')
+      .eq('batch', batch)
+      .order('id', {
         ascending: true
-        })
+      })
 
-    if (data) {
+  if (data) {
 
-      setQrList(data)
-    }
+    setQrList(data)
   }
+
+  const alreadyPrinted =
+
+    data?.every(
+      item => item.printed
+    )
+
+  if (alreadyPrinted) {
+
+    const confirmed =
+
+      window.confirm(
+
+        `El lote ${batch} ya está marcado como impreso.\n\n¿Deseas volver a imprimirlo?`
+      )
+
+    if (!confirmed) {
+
+      return
+    }
+
+    setIsReprint(true)
+
+  } else {
+
+    setIsReprint(false)
+  }
+}
 
   async function confirmPrint() {
 
@@ -184,25 +218,53 @@ loadBatch(
           Imprimir lote
         </button>
 	{
-	  showConfirm && (
+  showConfirm &&
+  !isReprint && (
 
-  	  <button
+    <div className="flex gap-4">
 
-           onClick={confirmPrint}
+      <button
 
-  	    className="
- 	     bg-green-600
-   	     text-white
-  	     px-6
- 	     py-3
-	     rounded-lg
-	   "
-         >
-          Confirmar impresión
-         </button>
+        onClick={confirmPrint}
 
- 	 )
-	}
+        className="
+          bg-green-600
+          text-white
+          px-6
+          py-3
+          rounded-lg
+        "
+      >
+
+        Confirmar impresión
+
+      </button>
+
+      <button
+
+        onClick={() => {
+
+          setShowConfirm(false)
+
+          loadBatch(selectedBatch!)
+        }}
+
+        className="
+          bg-red-600
+          text-white
+          px-6
+          py-3
+          rounded-lg
+        "
+      >
+
+        Impresión cancelada
+
+      </button>
+
+    </div>
+  )
+}
 
       </div>
 

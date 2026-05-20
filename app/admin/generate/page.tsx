@@ -186,13 +186,30 @@ const newBatch =
               : 'Generar QR'
           }
         </button>
-	<a
-         href="/admin/print"
-         className="bg-blue-600 text-white px-6 py-3 rounded-lg"
-        >
-         Vista impresión
-        </a>
+	
+	{
+       generatedBatch && (
 
+    <a
+
+      href={`/admin/print?batch=${generatedBatch}`}
+
+      className="
+        bg-blue-600
+        text-white
+        px-6
+        py-3
+        rounded-lg
+      "
+    >
+
+      Vista impresión
+
+    </a>
+  )
+}
+
+	
       </div>
       {
   generatedBatch && (
